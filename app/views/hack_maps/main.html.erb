@@ -48,70 +48,104 @@
 <script>
 function getLocation() {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(createHiddenFields);
+			navigator.geolocation.getCurrentPosition(createHiddenFields, 
+				function () {alert("Please enable gps")},{ maximumAge:600000, timeout:5000, enableHighAccuracy: true});
 		} else { 
 			alert("Geolocation is not supported by this browser.");
 		}
 	}
 function createHiddenFields(position){
+	console.log("I enter this method during initialization!");
 	lat = position.coords.latitude
 	lon = position.coords.longitude
+
 	document.getElementById('latitude').value = lat;
 	document.getElementById('longitude').value = lon;
+
 	var mapCanvas = document.getElementById('map-canvas');
+	var bounds = new google.maps.LatLngBounds();
 	var mapOptions = {
 		center: new google.maps.LatLng(lat , lon),
 		zoom: 17,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
-
+	/* create map here */
 	var map = new google.maps.Map(mapCanvas, mapOptions);
 
 	/* function fired after modal form is submitted */
-	function addMarker() {
-		console.log("This method was called");
-		var projectTitle = document.getElementById("title").innerHTML;
-		var description = document.getElementById("description").innerHTML;
+	function addMarker(map) {
+		console.log("the addMarker method is executed");
 
-		var infowindow = new google.maps.InfoWindow({
-			content: contentString
-		});
+		// adding Multiple Markers from ruby object
+		var markers = [
+			<% @posts.each do |post| %>
+			  <% if post.equal? @posts.last %>
+				['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>']
+			  <% else %>
+				['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>'],
+			  <% end %>	
+			<% end %>
+		];
 
-		var contentString = '<div id="content">'+
-		'<div id="siteNotice">'+
-		'</div>'+
-		'<h1 id="firstHeading" class="firstHeading"' + projectTitle + '</h1>'+
-		'<div id="bodyContent">'+
-		'<p>' + description +'</p>'+
-		'</div>'+
-		'</div>';
+		// adding Info Window Content
+		var infoWindowContent = [
+			<% @posts.each do |post| %>
+			  	<% if post.equal? @posts.last %>
+					['<div class="info_content" >' +
+					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<p><%= post.description %></p>' +
+					 '</div>']
+			    <% else %>
+					['<div class="info_content" >' +
+					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<p><%= post.description %></p>' +
+					 '</div>'],
+			    <% end %>
+			<% end %>
+		];
 
-		var marker = new google.maps.Marker({
-			position: location, 
-			map: map,
-			animation: google.maps.Animation.DROP,
-			draggable: true,
-			title: 'Drag Me!'
-		});
+		// Display multiple markers on a map
+		var infoWindow = new google.maps.InfoWindow(), marker, i;
+		for(i = 0; i < markers.length; i++) {
+			var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+			console.log("position1: " + position);
+			bounds.extend(position);
+			marker = new google.maps.Marker({
+				position: position,
+				map: map,
+				title: markers[i][0],
+				draggable: true,
+				animation: google.maps.Animation.DROP
+			});
 
-		marker.addListener('click', function() {
-			infowindow.open(map, marker);
-		});
+			/*marker.setMap(map);*/
 
-		marker.setMap(map); /* adds the marker to the map */
+			// Allow each marker to have an info window
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				return function() {
+					infoWindow.setContent(infoWindowContent[i][0]);
+					infoWindow.open(map, marker);
+				}
+			})(marker, i));
+
+			// Automatically center the map fittting all markers on the screen
+			map.fitBounds(bounds);
+
+		}
+
+
+		
+		// Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+	    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+	        this.setZoom(14);
+	        google.maps.event.removeListener(boundsListener);
+	    });
 	}
+
+	addMarker(map);
 }
 function initialize() {
 	getLocation();
-
-	
-
-
-
-	/* google.maps.event.addListener(map, 'click', function(event) { */
-		/* }); */
-
-
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 

@@ -51,23 +51,28 @@ class PostsHandler
 	end
 
 	def parse_json_for_posts(jsonOfPosts)
-		id_key= 0
-		location_key = "Location"
-		longitude_key = "longitude"
-		latitude_key = "latitude"
-		description_key = "description"
-		title_key = "title"
-		listOfPosts = []
-		jsonOfPosts.each{
-			|postJson|
+		if jsonOfPosts.nil?
+			return []
+		else
+			id_key= 0
+			location_key = "Location"
+			longitude_key = "longitude"
+			latitude_key = "latitude"
+			description_key = "description"
+			title_key = "title"
+			listOfPosts = []
 
-			dictionaryOfPost = postJson[1]
-			post = Post.new(postJson[id_key], dictionaryOfPost[title_key],  dictionaryOfPost[description_key], 
-				dictionaryOfPost[location_key][latitude_key], dictionaryOfPost[location_key][longitude_key])
-			listOfPosts.append(post)
+			jsonOfPosts.each{
+				|postJson|
 
-		}
-		return listOfPosts
+				dictionaryOfPost = postJson[1]
+				post = Post.new(postJson[id_key], dictionaryOfPost[title_key],  dictionaryOfPost[description_key], 
+					dictionaryOfPost[location_key][latitude_key], dictionaryOfPost[location_key][longitude_key])
+				listOfPosts.append(post)
+
+			}
+			return listOfPosts
+		end
 	end
 
 end
