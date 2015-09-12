@@ -28,9 +28,10 @@ class PostsHandler
 		end
 	end
 
-	def get_posts(latitude,longitude,radius)
+	def get_all_posts()
 		response = @firebase.get(LIST_OF_POSTS_KEY)
 		listOfPosts = parse_json_for_posts(response.body)
+		return listOfPosts
 	end
 
 	private

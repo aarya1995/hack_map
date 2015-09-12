@@ -1,0 +1,25 @@
+<form action="<%= hack_maps_path %>" method="POST" id="latlong">
+	<input name ="latitude" type="hidden" class="form-control" id="latitude"  >
+	<input name="longitude"type="hidden" class="form-control" id="longitude" >
+	<input type="submit" type="hidden" class="btn btn-green" />
+</form>
+<script>
+$(document).ready(function() { 
+
+
+	if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(redirectToMain);
+		} else { 
+			alert("Geolocation is not supported by this browser.");
+	}
+
+});
+
+function redirectToMain(position){
+	lat = position.coords.latitude
+	lon = position.coords.longitude
+	document.getElementById('latitude').value = lat;
+	document.getElementById('longitude').value = lon;
+	document.getElementById('latlong').submit();
+}
+</script>
