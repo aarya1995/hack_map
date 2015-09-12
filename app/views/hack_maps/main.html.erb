@@ -44,6 +44,10 @@
 			</div>
 		</div> <!-- end of modal -->
 	</div> <!-- end of row -->
+	<div class="row">
+		<div class="selected-post">
+		</div>	
+	</div>
 </div>
 <script>
 function getLocation() {
@@ -55,7 +59,7 @@ function getLocation() {
 		}
 	}
 function createHiddenFields(position){
-	console.log("I enter this method during initialization!");
+
 	lat = position.coords.latitude
 	lon = position.coords.longitude
 
@@ -146,6 +150,7 @@ function createHiddenFields(position){
 }
 function initialize() {
 	getLocation();
+
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
