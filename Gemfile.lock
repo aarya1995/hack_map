@@ -46,7 +46,11 @@ GEM
     erubis (2.7.0)
     execjs (2.6.0)
     ffi (1.9.10)
+    firebase (0.2.4)
+      httpclient
+      json
     hike (1.2.3)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
@@ -147,6 +151,7 @@ PLATFORMS
 DEPENDENCIES
   capybara (= 2.1.0)
   coffee-rails (~> 4.0.0)
+  firebase
   jbuilder (~> 1.2)
   jquery-rails
   pg (= 0.15.1)
