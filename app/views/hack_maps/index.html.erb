@@ -63,17 +63,70 @@
 			</div> <!-- end of modal -->
 		</div> 
 	</div> <!-- end of row -->
+	
+	<div class="row comments-section" id="comments-section">
+		<h2>Comments for Post X:</h2>
+		<ul id="comment-list">
+			
+		</ul>
 
+		<form >
+			<div class="form-group">
+				<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+				<label for="title">Comment</label>
+				<textarea name="description" id="comment-box" placeholder="Enter a description here..." rows="3"></textarea>
+				<input name="postId" id="postId" value="" type="hidden">
+			</div>
+			<input type="submit" id="comment_submit" class="btn" />
+		</form>
+	</div>
 </div>
 
 <script>
 var map = null
+
+$(function() {
+  $("#comment_submit").on("click", function(event) {
+    event.preventDefault();
+    $.ajax({
+      type: "POST",
+      url: "<%= comments_path %>",
+      data: {
+      			comment: {
+      				postId: document.getElementById('postId').value,
+      				description: document.getElementById('comment-box').value
+      			}
+  			},
+      success: function(result) {
+        // Append the result to a table or list, $("list").append(result)
+      }
+    });
+  });
+});
+
 function getLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(createHiddenFields, 
 			function () {alert("Please enable gps")},{ maximumAge:600000, timeout:5000, enableHighAccuracy: true});
 	} else { 
 		alert("Geolocation is not supported by this browser.");
+	}
+}
+function showComments(comments,id){
+	comments = String(comments);
+	document.getElementById('postId').value = id;
+	alert(typeof comments);
+	var commentSection = document.getElementById('comments-section');
+	commentSection.style.display= "block";
+
+	var commentsArray = comments.split(',');
+	for(var i =0; i<commentsArray.length; i++){
+		var s = commentsArray[i];
+		var commentItem = document.createElement("li");
+		var textValue = document.createTextNode(s);
+		commentItem.appendChild(textValue);
+		console.log(s);
+		document.getElementById('comment-list').appendChild(commentItem);
 	}
 }
 function createHiddenFields(position){
@@ -86,6 +139,7 @@ function createHiddenFields(position){
 
 	var mapCanvas = document.getElementById('map-canvas');
 	var bounds = new google.maps.LatLngBounds();
+	console.log(lat, lon);
 	var mapOptions = {
 		center: new google.maps.LatLng(lat , lon),
 		zoom: 17,
@@ -111,21 +165,24 @@ function createHiddenFields(position){
 
 		// adding Info Window Content
 		var infoWindowContent = [
-		<% @posts.each do |post| %>
-		<% if post.equal? @posts.last %>
-		['<div class="info_content" >' +
-		'<h3><%= post.title %></h3>' + '</br>' +
-		'<p><%= post.description %></p>' +
-		'</div>']
-		<% else %>
-		['<div class="info_content" >' +
-		'<h3><%= post.title %></h3>' + '</br>' +
-		'<p><%= post.description %></p>' +
-		'</div>'],
-		<% end %>
-		<% end %>
-		];
 
+			<% @posts.each do |post| %>
+			  	<% if post.equal? @posts.last %>
+					['<div class="info_content" >' +
+					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<p><%= post.description %></p>' + '</br>' +
+					 '<a href="#" onclick="showComments(<%= post.comments.to_s %> , &quot;<%= post.id %>&quot; )">Show Comments</a>' +					 
+					 '</div>']
+			    <% else %>
+					['<div class="info_content" >' +
+					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<p><%= post.description %></p>' + '</br>' +
+					 '<a href="#" onclick="showComments(<%= post.comments.to_s %> , &quot;<%= post.id %>&quot;)">Show Comments</a>' +
+					 '</div>'],
+			    <% end %>
+			<% end %>
+		];
+	
 		// Display multiple markers on a map
 		var infoWindow = new google.maps.InfoWindow(), marker, i;
 		document.getElementById('food').onclick = (function(markers){
@@ -151,18 +208,18 @@ function createHiddenFields(position){
 			/*marker.setMap(map);*/
 
 			// Allow each marker to have an info window
-			google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+			google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				return function() {
 					infoWindow.setContent(infoWindowContent[i][0]);
 					infoWindow.open(map, marker);
 				}
 			})(marker, i));
-			google.maps.event.addListener(marker, 'mouseout', (function(marker, i) {
-				return function() {
-					infoWindow.setContent(infoWindowContent[i][0]);
-					infoWindow.close(map, marker);
-				}
-			})(marker, i));
+			// google.maps.event.addListener(marker, 'mo', (function(marker, i) {
+			// 	return function() {
+			// 		infoWindow.setContent(infoWindowContent[i][0]);
+			// 		infoWindow.close(map, marker);
+			// 	}
+			// })(marker, i));
 			// google.maps.event.addListener(marker, 'click', function(marker, i){
 			// 	displayComments(i)
 			// })

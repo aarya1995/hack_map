@@ -7,7 +7,7 @@ class HackMapsController < ApplicationController
 		posthandler = PostsHandler::PostsHandler.new("https://glaring-torch-4803.firebaseio.com")
 		@posts = posthandler.get_all_posts()
 		puts @posts
-		
+
 	end
 
 	def create
