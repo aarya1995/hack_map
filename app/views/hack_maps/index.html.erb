@@ -5,7 +5,7 @@
 	<div class="row map-row">
 		<div class="col-md-12 col-sm-12 col-xs-12 map-col">
 
-				<div id="map-canvas" class="center-block"></div>
+			<div id="map-canvas" class="center-block"></div>
 
 		</div>
 	</div>
@@ -22,22 +22,33 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="myModalLabel">Tell Us About Your Project</h4>
+							<h4 class="modal-title" id="myModalLabel">Tell Us About Your Spot</h4>
 						</div>
 						<form action="<%= hack_maps_path %>" class="project_form" method="POST">
 							<div class="modal-body">
 								<div class="form-group">
 									<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
-									<label for="title">Title of Project</label>
-									<input name="title" type="text" class="form-control" id="title" placeholder="title">
+									<label for="title">Title</label>
+									<input name="title" type="text" class="form-control" id="title" placeholder="Title">
 								</div>
 								<div class="form-group">
 									<label for="description">Short Description</label>
-									<textarea name="description" id="description" class="form-control" rows="3"></textarea>
+									<textarea name="description" id="description" class="form-control" placeholder="Enter a description here..." rows="3"></textarea>
 								</div>
-
-									<input name ="latitude" type="hidden" class="form-control" id="latitude"  >
-									<input name="longitude"type="hidden" class="form-control" id="longitude" >
+								<div class="form-group">
+									<div class="dropdown">
+										<label for="tag">Select a tag</label>
+										<select   id="tag" name="tag"class="form-control" aria-labelledby="dropdownMenu1">
+											<option value="food">Food</option>
+											<option value="event">Event</option>
+											<option value="project">Project</option>
+											<option value="message">General Message</option>
+											
+										</ul>
+									</div>
+								</div>
+								<input name ="latitude" type="hidden" class="form-control" id="latitude"  >
+								<input name="longitude"type="hidden" class="form-control" id="longitude" >
 								
 							</div> <!-- end of modal body -->
 							<div class="modal-footer">
@@ -50,20 +61,22 @@
 					</div>
 				</div>
 			</div> <!-- end of modal -->
-		 </div> 
+		</div> 
 	</div> <!-- end of row -->
-</div> <!-- end of container -->
+
+</div>
+
 <script>
 function getLocation() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(createHiddenFields, 
-				function () {alert("Please enable gps")},{ maximumAge:600000, timeout:5000, enableHighAccuracy: true});
-		} else { 
-			alert("Geolocation is not supported by this browser.");
-		}
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(createHiddenFields, 
+			function () {alert("Please enable gps")},{ maximumAge:600000, timeout:5000, enableHighAccuracy: true});
+	} else { 
+		alert("Geolocation is not supported by this browser.");
 	}
+}
 function createHiddenFields(position){
-	console.log("I enter this method during initialization!");
+
 	lat = position.coords.latitude
 	lon = position.coords.longitude
 
@@ -87,17 +100,18 @@ function createHiddenFields(position){
 
 		// adding Multiple Markers from ruby object
 		var markers = [
-			<% @posts.each do |post| %>
-			  <% if post.equal? @posts.last %>
-				['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>']
-			  <% else %>
-				['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>'],
-			  <% end %>	
-			<% end %>
+		<% @posts.each do |post| %>
+		<% if post.equal? @posts.last %>
+		['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>']
+		<% else %>
+		['<%= post.title %>', '<%= post.latitude %>', '<%= post.longitude %>'],
+		<% end %>	
+		<% end %>
 		];
 
 		// adding Info Window Content
 		var infoWindowContent = [
+
 			<% @posts.each do |post| %>
 			  	<% if post.equal? @posts.last %>
 					['<div class="info_content" >' +
@@ -138,7 +152,15 @@ function createHiddenFields(position){
 					infoWindow.open(map, marker);
 				}
 			})(marker, i));
-
+			// google.maps.event.addListener(marker, 'mo', (function(marker, i) {
+			// 	return function() {
+			// 		infoWindow.setContent(infoWindowContent[i][0]);
+			// 		infoWindow.close(map, marker);
+			// 	}
+			// })(marker, i));
+			// google.maps.event.addListener(marker, 'click', function(marker, i){
+			// 	displayComments(i)
+			// })
 			// Automatically center the map fittting all markers on the screen
 			map.fitBounds(bounds);
 
@@ -147,16 +169,17 @@ function createHiddenFields(position){
 
 		
 		// Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
-	    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-	        this.setZoom(14);
-	        google.maps.event.removeListener(boundsListener);
-	    });
+		var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+			this.setZoom(14);
+			google.maps.event.removeListener(boundsListener);
+		});
 	}
 
 	addMarker(map);
 }
 function initialize() {
 	getLocation();
+
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
