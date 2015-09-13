@@ -6,6 +6,7 @@ class Post
 		@description = description
 		@latitude = latitude
 		@longitude = longitude
+		@comments = []
 	end
 	def to_s 
 		return "id: "+@id.to_s + " title: " + @title.to_s + " description: " + @description.to_s + " latitude: " + 

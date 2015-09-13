@@ -1,18 +1,21 @@
 require  'firebase'
+require 'rest-firebase'
 require_relative  'Post'
 class PostsHandler
-
-	MIN_DESCRIPTION_LENGTH = 10
+	attr_accessor :base_uri
+	MIN_DESCRIPTION_LENGTH = 1
 	private_constant :MIN_DESCRIPTION_LENGTH
 
-	MIN_TITLE_LENGTH = 3
+	MIN_TITLE_LENGTH = 1
 	private_constant :MIN_TITLE_LENGTH
 	LIST_OF_POSTS_KEY = "Posts"
 	private_constant :LIST_OF_POSTS_KEY
+
 	def self.secret
   		10
 	end
 	def initialize(base_uri)
+		@base_uri = base_uri
 		@firebase = Firebase::Client.new(base_uri)
 	end
 	def create_post(title, description, latitude, longitude)
@@ -21,13 +24,28 @@ class PostsHandler
 
 		else
 
-			response = @firebase.push("Posts",{:title => title, :description => description, :Location =>{:latitude => latitude ,
+			response = @firebase.push("Posts",{:title => title, :description => description,:Location =>{:latitude => latitude ,
 				:longitude => longitude}} )
 			
 			return response.success?
 		end
 	end
 
+	def comment(postId, comment)
+		post = RestFirebase.new :site => @base_uri, :secret => 'WAc5sbCwOuK1etxY8GUpZqkWCmUsGdrbeYGIeIVa'
+		postJson = post.get('Posts/' + postId.to_s)
+		list = Array.new(0) 
+		list << comment
+		if(postJson['comments'] ==nil)
+			postJson['comments']= list
+		else
+			postJson['comments'] = postJson['comments'] <<comment
+		end
+		post.put('Posts/'+postId.to_s, postJson)
+
+		return post
+		
+	end
 	def get_all_posts()
 		response = @firebase.get(LIST_OF_POSTS_KEY)
 		listOfPosts = parse_json_for_posts(response.body)
