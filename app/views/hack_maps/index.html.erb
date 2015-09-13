@@ -81,10 +81,20 @@
 </div>
 
 <script>
+<<<<<<< HEAD
 var map = null;
+=======
+var map = null
+
+>>>>>>> 45b1221ecf176f20dee3c97276f8888beacc887b
 $(function() {
   $("#comment_submit").on("click", function(event) {
     event.preventDefault();
+     // $("#comment-box").append("<div id>")
+    var commentItem = document.createElement("li");
+	var textValue = document.createTextNode(document.getElementById('comment-box').value);
+	commentItem.appendChild(textValue);
+	document.getElementById('comment-list').appendChild(commentItem);
     $.ajax({
       type: "POST",
       url: "<%= comments_path %>",
@@ -95,11 +105,13 @@ $(function() {
       			}
   			},
       success: function(result) {
+      	
         // Append the result to a table or list, $("list").append(result)
       }
     });
   });
 });
+
 function getLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(createHiddenFields, 
@@ -111,7 +123,7 @@ function getLocation() {
 function showComments(comments,id){
 	comments = String(comments);
 	document.getElementById('postId').value = id;
-	/*alert(typeof comments);*/
+
 	var commentSection = document.getElementById('comments-section');
 	commentSection.style.display= "block";
 
@@ -185,6 +197,14 @@ function createHiddenFields(position){
 	
 		// Display multiple markers on a map
 		var infoWindow = new google.maps.InfoWindow(), marker, i;
+		document.getElementById('food').onclick = (function(markers){
+			console.log("here")
+			markers[i].setMap(null);
+			for(i = 0; i < markers.length; i++){
+				console.log("here")
+				
+			}
+		})
 		for(i = 0; i < markers.length; i++) {
 			var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
 			console.log("position1: " + position);
@@ -231,9 +251,16 @@ function createHiddenFields(position){
 	addMarker(map);
 
 }
+<<<<<<< HEAD
 
+=======
+function addFilterListener(){
+
+}
+>>>>>>> 45b1221ecf176f20dee3c97276f8888beacc887b
 function initialize() {
 	getLocation();
+	addFilterListener();
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
