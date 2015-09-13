@@ -39,6 +39,10 @@
    margin: 0px;
 }
 
+.modal-form {
+  padding: 0px;
+}
+
 .comments-section {
    margin: 0px;
 }
@@ -109,4 +113,46 @@
 
 .comments-section {
    display: none;
+}
+
+.comments-header {
+  background-color: #9b59b6;
+  color: white;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.comments-col {
+  padding: 0px;
+}
+
+.user-comments {
+  background-color: #fff;
+  margin-top: 20px;
+}
+
+#comment-list {
+  padding-left: 20px;
+  list-style: none;
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.final-comments-form {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+}
+
+#comment_submit {
+  background-color: #f39c12;
+  color: white;
+}
+
+.comments-form {
+  margin-top: 15px;
 }

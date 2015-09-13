@@ -63,20 +63,29 @@
 	</div> <!-- end of row -->
 	
 	<div class="row comments-section" id="comments-section">
-		<h2>Comments for Post X:</h2>
-		<ul id="comment-list">
-			
-		</ul>
+		<div class="col-md-12 col-xs-12 col-sm-12 comments-col">
+			<section class="comment-header">
+				<h3 class="comments-header text-center">Comments:</h3>
+			</section>
 
-		<form >
-			<div class="form-group">
-				<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
-				<label for="title">Comment</label>
-				<textarea name="description" id="comment-box" placeholder="Enter a description here..." rows="3"></textarea>
-				<input name="postId" id="postId" value="" type="hidden">
-			</div>
-			<input type="submit" id="comment_submit" class="btn" />
-		</form>
+			<section class="user-comments">
+				<ul id="comment-list">
+					
+				</ul>
+			</section>
+			
+			<section class="comments-form">
+				<form class="final-comments-form">
+					<div class="form-group">
+						<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+						<label for="comment-box">Leave a comment:</label>
+						<textarea name="description" id="comment-box" placeholder="Enter a description here..." rows="3" class="form-control"></textarea>
+						<input name="postId" id="postId" value="" type="hidden">
+					</div>
+					<input type="submit" id="comment_submit" class="btn" />
+				</form>
+			</section>
+		</div>
 	</div>
 </div>
 
@@ -132,6 +141,8 @@ function showComments(comments,id){
 		commentItem.appendChild(textValue);
 		console.log(s);
 		document.getElementById('comment-list').appendChild(commentItem);
+		var separator = document.createElement("hr");
+		document.getElementById('comment-list').appendChild(separator);
 	}
 
 	$('html,body').animate({
@@ -178,13 +189,13 @@ function createHiddenFields(position){
 			<% @posts.each do |post| %>
 			  	<% if post.equal? @posts.last %>
 					['<div class="info_content" >' +
-					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<h3><%= post.title %></h3>' + '<hr>' +
 					 '<p><%= post.description %></p>' + '</br>' +
 					 '<a href="#" class="scroll_comments" onclick="showComments(<%= post.comments.to_s %> , &quot;<%= post.id %>&quot; )">Show Comments</a>' +					 
 					 '</div>']
 			    <% else %>
 					['<div class="info_content" >' +
-					 '<h3><%= post.title %></h3>' + '</br>' +
+					 '<h3><%= post.title %></h3>' + '<hr>' +
 					 '<p><%= post.description %></p>' + '</br>' +
 					 '<a href="#" class="scroll_comments" onclick="showComments(<%= post.comments.to_s %> , &quot;<%= post.id %>&quot;)">Show Comments</a>' +
 					 '</div>'],
@@ -194,14 +205,7 @@ function createHiddenFields(position){
 	
 		// Display multiple markers on a map
 		var infoWindow = new google.maps.InfoWindow(), marker, i;
-		document.getElementById('food').onclick = (function(markers){
-			console.log("here")
-			markers[i].setMap(null);
-			for(i = 0; i < markers.length; i++){
-				console.log("here")
-				
-			}
-		})
+	
 		for(i = 0; i < markers.length; i++) {
 			var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
 			console.log("position1: " + position);
@@ -237,7 +241,6 @@ function createHiddenFields(position){
 		}
 
 
-		
 		// Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
 		var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
 			this.setZoom(14);
