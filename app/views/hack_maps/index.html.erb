@@ -1,54 +1,60 @@
-<div class="container">
-	<h1 class="text-center">Hackathon Map</h1>
-	<div class="row">
-		<div id="map-container" class="center-block">
-			<div id="map-canvas"></div>
+<div class="container app-content">
+	<!--<div class="row app-header">
+		<h1 class="text-center header-text">Hackathon Map</h1>
+	</div> -->
+	<div class="row map-row">
+		<div class="col-md-12 col-sm-12 col-xs-12 map-col">
+
+				<div id="map-canvas" class="center-block"></div>
+
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="btn btn-lg btn-add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Your Project</div>
-
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel">Tell Us About Your Project</h4>
-					</div>
-					<form action="<%= hack_maps_path %>" method="POST">
-						<div class="modal-body">
-							<div class="form-group">
-								<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
-								<label for="title">Title of Project</label>
-								<input name="title" type="text" class="form-control" id="title" placeholder="title">
-							</div>
-							<div class="form-group">
-								<label for="description">Short Description</label>
-								<textarea name="description" id="description" class="form-control" rows="3"></textarea>
-							</div>
-
-								<input name ="latitude" type="hidden" class="form-control" id="latitude"  >
-								<input name="longitude"type="hidden" class="form-control" id="longitude" >
-							
-						</div> <!-- end of modal body -->
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-
-							<input type="submit" class="btn btn-green" />
+	<div class="row modal-row">
+		<div class="col-md-12 col-sm-12 col-xs-12 btn-col">
+			<div class="btn btn-lg btn-add" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Your Spot</div>
+		</div>
+		
+		<div class="col-md-12 col-sm-12 col-xs-12 modal-form">
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Tell Us About Your Project</h4>
 						</div>
-					</form>
+						<form action="<%= hack_maps_path %>" class="project_form" method="POST">
+							<div class="modal-body">
+								<div class="form-group">
+									<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+									<label for="title">Title of Project</label>
+									<input name="title" type="text" class="form-control" id="title" placeholder="title">
+								</div>
+								<div class="form-group">
+									<label for="description">Short Description</label>
+									<textarea name="description" id="description" class="form-control" rows="3"></textarea>
+								</div>
+
+									<input name ="latitude" type="hidden" class="form-control" id="latitude"  >
+									<input name="longitude"type="hidden" class="form-control" id="longitude" >
+								
+							</div> <!-- end of modal body -->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+
+								<input type="submit" class="btn btn-green" />
+							</div>
+						</form>
+					</div>
 				</div>
-			</div>
-		</div> <!-- end of modal -->
+			</div> <!-- end of modal -->
+		 </div> 
 	</div> <!-- end of row -->
-	<div class="row">
-		<div class="selected-post">
-		</div>	
-	</div>
+
 </div>
+
 <script>
 function getLocation() {
 		if (navigator.geolocation) {

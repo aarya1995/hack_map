@@ -2,16 +2,12 @@ require 'PostsHandler'
 
 class HackMapsController < ApplicationController
 	@posts= []
-	def main
+	def index
 		
 		posthandler = PostsHandler::PostsHandler.new("https://glaring-torch-4803.firebaseio.com")
 		@posts = posthandler.get_all_posts()
 		puts @posts
 		
-	end
-
-	def index 
-
 	end
 
 	def create
@@ -30,7 +26,7 @@ class HackMapsController < ApplicationController
 		# end
 		posthandler.create_post(title,description,latitude,longitude)
 		
-		redirect_to '/hack_maps/main'
+		redirect_to hack_maps_path
 	end
 
 end

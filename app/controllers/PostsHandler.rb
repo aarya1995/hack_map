@@ -3,6 +3,7 @@ require 'rest-firebase'
 require_relative  'Post'
 class PostsHandler
 	attr_accessor :base_uri
+
 	MIN_DESCRIPTION_LENGTH = 1
 	private_constant :MIN_DESCRIPTION_LENGTH
 
