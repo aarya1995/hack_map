@@ -21,9 +21,7 @@ class PostsHandler
 	def create_post(title, description, latitude, longitude,tag)
 		if(not(is_valid(title,description,latitude,longitude)))			
 			raise ValueError("Invalid Parameters")
-
 		else
-
 			response = @firebase.push("Posts",{:title => title, :description => description,:tag => tag, :Location =>{:latitude => latitude ,
 				:longitude => longitude}} )
 			
@@ -32,7 +30,7 @@ class PostsHandler
 	end
 
 	def comment(postId, comment)
-		post = RestFirebase.new :site => @base_uri, :secret => ENV['FIREBASEKEY']
+		post = RestFirebase.new :site => @base_uri, :secret => 'WAc5sbCwOuK1etxY8GUpZqkWCmUsGdrbeYGIeIVa'
 		postJson = post.get('Posts/' + postId.to_s)
 		list = Array.new(0) 
 		list << comment
