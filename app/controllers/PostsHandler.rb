@@ -2,7 +2,7 @@ require  'firebase'
 require_relative  'Post'
 class PostsHandler
 
-	MIN_DESCRIPTION_LENGTH = 10
+	MIN_DESCRIPTION_LENGTH = 1
 	private_constant :MIN_DESCRIPTION_LENGTH
 
 	MIN_TITLE_LENGTH = 3

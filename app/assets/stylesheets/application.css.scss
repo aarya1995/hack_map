@@ -22,26 +22,77 @@
  }
 
  .app-content {
-   width: 90%;
+   width: 100%;
+   padding-left: 0px;
+   padding-right: 0px;
  }
 
+.map-col {
+   padding: 0;
+}
+
+.map-row {
+   margin: 0px;
+}
+
+.modal-row {
+   margin: 0px;
+}
+ /*.app-header {
+  height: 10vh; 
+
+  .header-text {
+      margin-top: 4%;
+      margin-bottom: 5%;
+  }
+ } */
+
  #map-canvas {
-   height: 900px;
+   height: 90vh;
    width: 100%;
-   margin-top: 4%;
+   margin: 0;
+   padding: 0;
  }
 
  .btn-add {
-   padding:20px;
-   margin-top: 2%;
+   height: 10vh;
+   padding:13px;
    background-color: #4CAF50;
    color: white;
    width: 100%;
-   font-size: 2em;
+   font-size: 1.4em;
    font-family: 'Lato', 'sans-serif';
+   border-radius: 0px;
+ }
+
+ .btn-col {
+   padding: 0;
  }
 
  .btn-green {
    background-color: #4CAF50;
    color: white;
  }
+
+ /* styling for the navbar */
+.navbar {
+   background-color: rgba(76, 175, 80, 0.9);
+
+   border-radius: 0px;
+       padding: 7px;
+       padding-top: 7px;
+       padding-bottom: 5px;
+       
+
+       -webkit-box-shadow: 0 8px 6px -6px #999;
+          -moz-box-shadow: 0 8px 6px -6px #999;
+               box-shadow: 0 8px 6px -6px #999;
+       border: transparent;
+       margin-bottom: 0px;
+}
+
+.navbar-brand {
+       font-family: 'Lato', sans-serif;
+       font-weight: 600;
+       font-size: 30px;
+   }
