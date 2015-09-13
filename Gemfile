@@ -7,7 +7,7 @@ gem 'pg', '0.15.1'
 
 group :development, :test do
 	gem 'rspec-rails', '2.13.1'
-	gem 'debugger'
+	
 end
 
 group :test do

@@ -88,6 +88,11 @@ var map = null
 $(function() {
   $("#comment_submit").on("click", function(event) {
     event.preventDefault();
+     // $("#comment-box").append("<div id>")
+    var commentItem = document.createElement("li");
+	var textValue = document.createTextNode(document.getElementById('comment-box').value);
+	commentItem.appendChild(textValue);
+	document.getElementById('comment-list').appendChild(commentItem);
     $.ajax({
       type: "POST",
       url: "<%= comments_path %>",
@@ -98,6 +103,7 @@ $(function() {
       			}
   			},
       success: function(result) {
+      	
         // Append the result to a table or list, $("list").append(result)
       }
     });
@@ -115,7 +121,7 @@ function getLocation() {
 function showComments(comments,id){
 	comments = String(comments);
 	document.getElementById('postId').value = id;
-	alert(typeof comments);
+
 	var commentSection = document.getElementById('comments-section');
 	commentSection.style.display= "block";
 
