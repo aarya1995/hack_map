@@ -67,6 +67,7 @@
 </div>
 
 <script>
+var map = null
 function getLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(createHiddenFields, 
@@ -91,7 +92,7 @@ function createHiddenFields(position){
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
 	/* create map here */
-	var map = new google.maps.Map(mapCanvas, mapOptions);
+	map = new google.maps.Map(mapCanvas, mapOptions);
 
 	/* function fired after modal form is submitted */
 	function addMarker(map) {
@@ -127,6 +128,14 @@ function createHiddenFields(position){
 
 		// Display multiple markers on a map
 		var infoWindow = new google.maps.InfoWindow(), marker, i;
+		document.getElementById('food').onclick = (function(markers){
+			console.log("here")
+			markers[i].setMap(null);
+			for(i = 0; i < markers.length; i++){
+				console.log("here")
+				
+			}
+		})
 		for(i = 0; i < markers.length; i++) {
 			var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
 			console.log("position1: " + position);
@@ -173,8 +182,12 @@ function createHiddenFields(position){
 
 	addMarker(map);
 }
+function addFilterListener(){
+
+}
 function initialize() {
 	getLocation();
+	addFilterListener();
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
