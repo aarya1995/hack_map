@@ -81,12 +81,9 @@
 </div>
 
 <script>
-<<<<<<< HEAD
-var map = null;
-=======
-var map = null
 
->>>>>>> 45b1221ecf176f20dee3c97276f8888beacc887b
+var map = null;
+
 $(function() {
   $("#comment_submit").on("click", function(event) {
     event.preventDefault();
@@ -251,16 +248,9 @@ function createHiddenFields(position){
 	addMarker(map);
 
 }
-<<<<<<< HEAD
 
-=======
-function addFilterListener(){
-
-}
->>>>>>> 45b1221ecf176f20dee3c97276f8888beacc887b
 function initialize() {
 	getLocation();
-	addFilterListener();
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
